@@ -22,15 +22,15 @@ docker container exec -it query-engine trino
 ```
 Creating schemas through the query engine
 ```sql
-CREATE SCHEMA minio.test
+CREATE SCHEMA minio.data_lake
 WITH (location = 's3a://warehouse/');
 
-CREATE TABLE minio.test.customer
+CREATE TABLE minio.data_lake.companies
 WITH (
-    format = 'ORC',
+    format = 'PARQUET',
     external_location = 's3a://warehouse/companies/'
 ) 
-AS SELECT * FROM tpch.tiny.customer;
+AS SELECT * FROM operational.business.organizations;
 ```
 			
 ### Inpsecting Metadata
@@ -40,14 +40,7 @@ docker exec -it "postgres" psql -U admin -d "hive_db"
 ```
 To inspect them metadata catalog 
 ```sql
-SELECT
- "DB_ID",
- "DB_LOCATION_URI",
- "NAME", 
- "OWNER_NAME",
- "OWNER_TYPE",
- "CTLG_NAME"
-FROM "DBS";
+SELECT * from "DBS";
 ```
 
 Shutdown
